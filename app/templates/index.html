@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ app_name }}</title>
+  
+  <!-- Ícone da Aba do Navegador (Favicon) -->
+  <link rel="icon" type="image/svg+xml" href="/static/favicon.svg">
+
+  <!-- Script inline para prevenir flash do tema incorreto -->
+  <script>
+    if (localStorage.getItem('theme') === 'light') {
+      document.documentElement.classList.remove('dark');
+    } else {
+      document.documentElement.classList.add('dark');
+    }
+  </script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="/static/css/style.css">
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-zinc-50 dark:bg-black text-zinc-900 dark:text-zinc-100 min-h-screen font-sans antialiased selection:bg-zinc-200 dark:selection:bg-zinc-800 transition-colors duration-200">
+
+  <div class="max-w-4xl mx-auto px-4 py-10">
+    <!-- Header Minimalista -->
+    <header class="flex items-center justify-between pb-6 border-b border-zinc-200 dark:border-zinc-800/80">
+      <div class="flex items-center gap-3">
+        <img src="/static/favicon.svg" alt="Logo Conversor" class="w-9 h-9 rounded-xl shadow-sm hover:scale-105 transition-transform duration-200" />
+        <div>
+          <h1 class="text-base font-semibold text-zinc-900 dark:text-white tracking-tight">Vertio-conversor</h1>
+          <p class="text-xs text-zinc-500">Multimídia, documentos e imagens</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <!-- Alternador de Tema Claro / Escuro -->
+        <button id="themeToggleBtn" title="Alternar tema" class="btn-press p-2 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-100 hover:border-zinc-300 dark:hover:border-zinc-700 shadow-sm transition flex items-center justify-center cursor-pointer">
+          <i id="themeIconSun" data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+          <i id="themeIconMoon" data-lucide="moon" class="w-4 h-4 block dark:hidden"></i>
+        </button>
+
+        <a href="/docs" target="_blank" class="btn-press px-2.5 py-1.5 rounded-lg bg-white dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 text-[11px] font-medium text-zinc-600 dark:text-zinc-400 hover:text-zinc-900 dark:hover:text-zinc-200 hover:border-zinc-300 dark:hover:border-zinc-700 shadow-sm transition flex items-center gap-1.5">
+          API
+          <i data-lucide="external-link" class="w-3 h-3 text-zinc-400 dark:text-zinc-500"></i>
+        </a>
+      </div>
+    </header>
+
+    <!-- Segmented Tabs -->
+    <div class="mt-8 flex justify-center">
+      <div class="inline-flex p-1 rounded-xl bg-zinc-200/70 dark:bg-zinc-900/80 border border-zinc-300/70 dark:border-zinc-800/90 text-xs font-medium text-zinc-600 dark:text-zinc-400 max-w-full overflow-x-auto">
+        <button class="segmented-tab active btn-press px-4 py-1.5 rounded-lg flex items-center gap-1.5 transition" data-mode="auto">
+          <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
+          Automático
+        </button>
+        <button class="segmented-tab btn-press px-4 py-1.5 rounded-lg flex items-center gap-1.5 transition" data-mode="video">
+          <i data-lucide="video" class="w-3.5 h-3.5"></i>
+          Vídeo & Áudio
+        </button>
+        <button class="segmented-tab btn-press px-4 py-1.5 rounded-lg flex items-center gap-1.5 transition" data-mode="image">
+          <i data-lucide="image" class="w-3.5 h-3.5"></i>
+          Imagens
+        </button>
+        <button class="segmented-tab btn-press px-4 py-1.5 rounded-lg flex items-center gap-1.5 transition" data-mode="document">
+          <i data-lucide="file-text" class="w-3.5 h-3.5"></i>
+          Documentos
+        </button>
+      </div>
+    </div>
+
+    <!-- Container Principal -->
+    <main class="mt-6">
+      
+      <!-- Dropzone Minimalista -->
+      <div id="dropzone" class="dropzone-box border border-dashed border-zinc-300 dark:border-zinc-800 hover:border-zinc-400 dark:hover:border-zinc-600 rounded-2xl p-10 text-center cursor-pointer bg-white/70 dark:bg-zinc-950/50 hover:bg-zinc-100/50 dark:hover:bg-zinc-900/30 group shadow-sm transition">
+        <input type="file" id="fileInput" class="hidden" multiple />
+        
+        <div class="w-10 h-10 mx-auto mb-3 rounded-lg bg-zinc-100 dark:bg-zinc-900 border border-zinc-200 dark:border-zinc-800 flex items-center justify-center text-zinc-500 dark:text-zinc-400 group-hover:text-zinc-800 dark:group-hover:text-zinc-200 transition">
+          <i data-lucide="upload" class="w-4 h-4"></i>
+        </div>
+
+        <p class="text-sm font-medium text-zinc-800 dark:text-zinc-200 mb-1">
+          Arraste seus arquivos ou <span class="text-zinc-950 dark:text-white underline underline-offset-4 decoration-zinc-400 dark:decoration-zinc-600">escolha do disco</span>
+        </p>
+        <p class="text-xs text-zinc-500 font-mono">
+          MP4, MKV, MP3, PNG, JPG, WEBP, PDF, DOCX, XLSX e mais
+        </p>
+      </div>
+
+      <!-- File Config & Preview -->
+      <div id="fileConfigArea" class="hidden mt-6 space-y-4 animate-in">
+        
+        <!-- Files List -->
+        <div class="bg-zinc-100/60 dark:bg-zinc-900/40 border border-zinc-200 dark:border-zinc-800/80 rounded-xl p-3">
+          <div class="flex items-center justify-between mb-2 px-1">
+            <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-500">
+              Arquivos selecionados (<span id="fileCount" class="text-zinc-800 dark:text-zinc-300 font-mono">0</span>)
+            </span>
+            <button id="clearFilesBtn" class="btn-press text-[11px] text-zinc-500 hover:text-rose-500 transition flex items-center gap-1">
+              <i data-lucide="x" class="w-3 h-3"></i>
+              Remover todos
+            </button>
+          </div>
+          <div id="filesList" class="space-y-1.5 max-h-40 overflow-y-auto pr-1 custom-scroll"></div>
+        </div>
+
+        <!-- Options Panel Minimalista -->
+        <div class="bg-white dark:bg-zinc-900/50 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 shadow-sm">
+          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+            
+            <div>
+              <label class="block text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mb-1">Converter para:</label>
+              <select id="targetFormatSelect" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-lg px-3 py-2 text-xs text-zinc-800 dark:text-zinc-200 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition font-mono">
+                <!-- Populado dinamicamente -->
+              </select>
+            </div>
+
+            <div id="optResolution" class="hidden">
+              <label class="block text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mb-1">Resolução:</label>
+              <select id="resolutionSelect" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-lg px-3 py-2 text-xs text-zinc-800 dark:text-zinc-200 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition">
+                <option value="">Original</option>
+                <option value="1080p">1080p (Full HD)</option>
+                <option value="720p">720p (HD)</option>
+                <option value="480p">480p (SD)</option>
+                <option value="360p">360p (Baixa)</option>
+              </select>
+            </div>
+
+            <div id="optQuality">
+              <label class="block text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mb-1">Qualidade:</label>
+              <select id="qualitySelect" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-lg px-3 py-2 text-xs text-zinc-800 dark:text-zinc-200 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition">
+                <option value="high">Alta Definição</option>
+                <option value="medium" selected>Padrão Otimizado</option>
+                <option value="low">Menor Tamanho</option>
+              </select>
+            </div>
+
+            <div id="optImageResize" class="hidden">
+              <label class="block text-[11px] font-medium text-zinc-500 dark:text-zinc-400 mb-1">Largura Máx (px):</label>
+              <input type="number" id="imageWidth" placeholder="ex: 1920" class="w-full bg-zinc-50 dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 hover:border-zinc-300 dark:hover:border-zinc-700 rounded-lg px-3 py-2 text-xs text-zinc-800 dark:text-zinc-200 focus:outline-none focus:border-zinc-400 dark:focus:border-zinc-600 transition" />
+            </div>
+
+          </div>
+
+          <!-- Opções Secundárias -->
+          <div class="mt-3 pt-3 border-t border-zinc-200 dark:border-zinc-800/60 flex flex-wrap gap-4 text-xs text-zinc-600 dark:text-zinc-400">
+            <label id="optGrayscale" class="hidden items-center gap-1.5 cursor-pointer hover:text-zinc-900 dark:hover:text-zinc-200 select-none">
+              <input type="checkbox" id="grayscaleCheck" class="rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-200 focus:ring-0">
+              Escala de cinza
+            </label>
+            <label id="optMuteAudio" class="hidden items-center gap-1.5 cursor-pointer hover:text-zinc-900 dark:hover:text-zinc-200 select-none">
+              <input type="checkbox" id="muteAudioCheck" class="rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-200 focus:ring-0">
+              Remover áudio
+            </label>
+            <label id="optBundleZip" class="flex items-center gap-1.5 cursor-pointer hover:text-zinc-900 dark:hover:text-zinc-200 select-none">
+              <input type="checkbox" id="bundleZipCheck" checked class="rounded border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-200 focus:ring-0">
+              Baixar lote em .ZIP
+            </label>
+          </div>
+        </div>
+
+        <!-- Botão Minimalista de Ação -->
+        <button id="startConvertBtn" class="btn-press w-full py-3 rounded-xl bg-zinc-900 hover:bg-zinc-800 text-white dark:bg-zinc-100 dark:hover:bg-white dark:text-zinc-900 text-xs font-semibold flex items-center justify-center gap-2 transition cursor-pointer shadow-sm">
+          <i data-lucide="play" class="w-3.5 h-3.5 fill-current"></i>
+          Converter Arquivos
+        </button>
+      </div>
+
+      <!-- Barra de Progresso Fina e Minimalista -->
+      <div id="progressArea" class="hidden mt-6 bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 animate-in shadow-sm">
+        <div class="flex items-center justify-between text-xs mb-2">
+          <span id="progressStatus" class="text-zinc-800 dark:text-zinc-300 font-medium flex items-center gap-2">
+            <i data-lucide="loader-2" class="w-3.5 h-3.5 animate-spin text-zinc-500 dark:text-zinc-400"></i>
+            Processando arquivos...
+          </span>
+          <span id="progressPercent" class="font-mono text-zinc-400 dark:text-zinc-500 text-[11px]">Convertendo</span>
+        </div>
+        
+        <!-- Linha Fina -->
+        <div class="w-full bg-zinc-200 dark:bg-zinc-800 rounded-full h-1 overflow-hidden relative">
+          <div id="progressBar" class="progress-line-active"></div>
+        </div>
+      </div>
+
+      <!-- Resultados Minimalistas -->
+      <div id="resultsArea" class="hidden mt-6 bg-white dark:bg-zinc-950 border border-zinc-200 dark:border-zinc-800 rounded-xl p-4 animate-in shadow-sm">
+        <div class="flex items-center justify-between mb-3 pb-2 border-b border-zinc-100 dark:border-zinc-800/80">
+          <div class="flex items-center gap-2 text-xs font-medium text-emerald-600 dark:text-emerald-400">
+            <i data-lucide="check" class="w-3.5 h-3.5"></i>
+            Concluído
+          </div>
+          <div id="batchZipDownloadHolder"></div>
+        </div>
+        
+        <div id="resultsList" class="space-y-2">
+          <!-- Itens dinâmicos -->
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Histórico Minimalista -->
+    <section class="mt-10 pt-6 border-t border-zinc-200 dark:border-zinc-900">
+      <div class="flex items-center justify-between mb-3">
+        <span class="text-[11px] font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500">Histórico Recente</span>
+        <button id="clearHistoryBtn" class="btn-press text-[11px] text-zinc-400 dark:text-zinc-500 hover:text-zinc-700 dark:hover:text-zinc-300 transition hidden">
+          Limpar
+        </button>
+      </div>
+      <div id="historyList" class="space-y-1.5">
+        <p class="text-xs text-zinc-400 dark:text-zinc-600 italic py-2" id="emptyHistoryText">Nenhuma conversão recente.</p>
+      </div>
+    </section>
+
+    <!-- Footer Minimalista -->
+    <footer class="mt-12 text-center text-[11px] text-zinc-400 dark:text-zinc-600">
+      Vertio-conversor
+    </footer>
+  </div>
+
+  <script src="/static/js/app.js"></script>
+</body>
+</html>

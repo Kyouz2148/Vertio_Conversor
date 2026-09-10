@@ -1,0 +1,28 @@
+services:
+  vertio-conversor:
+    image: kyouz2148/vertio-conversor:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: Vertio-conversor
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+      - DEBUG=false
+      - MAX_UPLOAD_SIZE_MB=2048
+      - FILE_RETENTION_MINUTES=60
+      - CLEANUP_INTERVAL_MINUTES=15
+    volumes:
+      # Armazenamento persistente para uploads, arquivos temporários e convertidos
+      - ./storage:/app/storage
+      # Montagem do código-fonte para atualizações imediatas
+      - ./app:/app/app
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s

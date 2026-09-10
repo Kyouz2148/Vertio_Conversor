@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <!-- Fundo Squircle com borda sutil -->
+  <rect width="32" height="32" rx="9" fill="#09090b"/>
+  <rect x="0.5" y="0.5" width="31" height="31" rx="8.5" stroke="#27272a" stroke-opacity="0.8"/>
+  
+  <!-- Seta Superior (Indigo) -->
+  <path d="M9 17.5V17C9 14.7909 10.7909 13 13 13H22" stroke="#818cf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M19 10L22.5 13L19 16" stroke="#818cf8" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Seta Inferior (Branco) -->
+  <path d="M23 14.5V15C23 17.2091 21.2091 19 19 19H10" stroke="#f4f4f5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M13 22L9.5 19L13 16" stroke="#f4f4f5" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

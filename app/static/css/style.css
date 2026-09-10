@@ -1,0 +1,112 @@
+/* ==========================================================================
+   Design System: Minimalista & Dual Theme (Dark / Light)
+   ========================================================================== */
+
+:root {
+  --ease-spring: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Barra de rolagem discreta */
+.custom-scroll::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+.custom-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scroll::-webkit-scrollbar-thumb {
+  background: #d4d4d8;
+  border-radius: 9999px;
+}
+.dark .custom-scroll::-webkit-scrollbar-thumb {
+  background: #27272a;
+}
+.custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: #a1a1aa;
+}
+.dark .custom-scroll::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
+
+/* Micro-animação tátil nos botões */
+.btn-press {
+  transition: transform 0.12s var(--ease-spring), opacity 0.15s ease, background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+.btn-press:active {
+  transform: scale(0.975);
+}
+
+/* Tabs estilo Segmented Control */
+.segmented-tab {
+  position: relative;
+  transition: color 0.18s ease, background-color 0.18s ease, box-shadow 0.18s ease;
+}
+.segmented-tab.active {
+  background-color: #ffffff;
+  color: #09090b;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+.dark .segmented-tab.active {
+  background-color: #27272a;
+  color: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+.segmented-tab:not(.active):hover {
+  color: #18181b;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+.dark .segmented-tab:not(.active):hover {
+  color: #d4d4d8;
+  background-color: rgba(39, 39, 42, 0.4);
+}
+
+/* Dropzone */
+.dropzone-box {
+  transition: border-color 0.2s ease, background-color 0.2s ease, transform 0.2s var(--ease-spring);
+}
+.dropzone-box.dragover {
+  border-color: #6366f1 !important;
+  background-color: rgba(99, 102, 241, 0.05) !important;
+  transform: scale(1.005);
+}
+
+/* Linha de progresso minimalista */
+@keyframes minimal-progress {
+  0% {
+    left: -35%;
+    width: 35%;
+  }
+  50% {
+    left: 30%;
+    width: 50%;
+  }
+  100% {
+    left: 100%;
+    width: 35%;
+  }
+}
+
+.progress-line-active {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  background: #6366f1;
+  animation: minimal-progress 1.4s infinite ease-in-out;
+  border-radius: 9999px;
+}
+
+/* Animações de entrada */
+@keyframes fade-slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-in {
+  animation: fade-slide-up 0.2s var(--ease-spring) forwards;
+}
