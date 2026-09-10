@@ -2,7 +2,7 @@
 set -e
 
 # Cria os diretórios necessários no volume montado caso ainda não existam
-mkdir -p /app/storage/uploads /app/storage/converted /app/storage/temp
+mkdir -p /app/storage/uploads /app/storage/converted /app/storage/temp 2>/dev/null || true
 
 # Ajusta propriedade e permissões completas para o appuser
 chown -R appuser:appuser /app/storage 2>/dev/null || true

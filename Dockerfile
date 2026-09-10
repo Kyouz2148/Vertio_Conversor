@@ -60,10 +60,6 @@ RUN chmod +x /entrypoint.sh
 # Expor porta padrão
 EXPOSE 8000
 
-# Verificação de integridade (Healthcheck)
-HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
-    CMD curl -f http://localhost:8000/api/status || exit 1
-
 ENTRYPOINT ["/entrypoint.sh"]
 
 # Inicialização do servidor
