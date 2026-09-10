@@ -31,6 +31,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     # Ferramentas auxiliares
     curl \
     ca-certificates \
+    gosu \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -53,8 +54,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copiar código-fonte da aplicação
 COPY --chown=appuser:appuser . .
 
-# Alternar para o usuário não-root
-USER appuser
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 # Expor porta padrão
 EXPOSE 8000
@@ -62,6 +63,8 @@ EXPOSE 8000
 # Verificação de integridade (Healthcheck)
 HEALTHCHECK --interval=30s --timeout=10s --start-period=15s --retries=3 \
     CMD curl -f http://localhost:8000/api/status || exit 1
+
+ENTRYPOINT ["/entrypoint.sh"]
 
 # Inicialização do servidor
 CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "2"]

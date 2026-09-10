@@ -28,5 +28,9 @@ class Settings(BaseSettings):
 settings = Settings()
 
 # Garantir que os diretórios necessários existem
-for directory in [settings.STORAGE_DIR, settings.UPLOAD_DIR, settings.OUTPUT_DIR, settings.TEMP_DIR]:
-    directory.mkdir(parents=True, exist_ok=True)
+try:
+    for directory in [settings.STORAGE_DIR, settings.UPLOAD_DIR, settings.OUTPUT_DIR, settings.TEMP_DIR]:
+        directory.mkdir(parents=True, exist_ok=True)
+except Exception as e:
+    import logging
+    logging.getLogger("config").warning(f"Não foi possível criar diretório automaticamente: {e}")
