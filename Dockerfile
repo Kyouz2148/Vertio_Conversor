@@ -25,6 +25,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     fonts-noto \
     # Motor de Imagens e Vetores
     imagemagick \
+    librsvg2-bin \
     # Motor de PDF e Páginas (pdftoppm, pdfinfo)
     poppler-utils \
     # Ferramentas auxiliares

@@ -1,6 +1,9 @@
-# 🚀 Vertio-conversor (Docker)
-
-Imagem Docker: `kyouz2148/vertio-conversor:latest`
+<div align="center">
+  <img src="assets/icon.png" width="96" height="96" alt="Vertio-conversor Logo" />
+  <h1>Vertio-conversor</h1>
+  <p><strong>Conversor Universal Multimídia & Documentos em Docker</strong></p>
+  <p><code>docker pull kyouz2148/vertio-conversor:latest</code></p>
+</div>
 
 Um ecossistema completo e autocontido em Docker para conversão de **Vídeos**, **Áudios**, **Imagens** e **Documentos do Office / PDFs**. Conta com uma **Interface Web Moderna (Dark Mode)**, suporte a arrastar e soltar (Drag & Drop), processamento em lote e uma **API REST com Swagger interativo**.
 
